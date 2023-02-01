@@ -1,0 +1,62 @@
+<div class="book-container">
+  <h2 class="book-title">Add Book</h2>
+  <div class="book-form__container">
+    <form [formGroup]="bookForm" class="book-form" (ngSubmit)="onBookSubmit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Title" formControlName="title" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Authors</mat-label>
+        <select matNativeControl required formControlName="author">
+          <option value="">Select Author</option>
+          <option [value]="author" *ngFor="let author of authors">
+            {{ author }}
+          </option>
+          >
+        </select>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          placeholder="Book description..."
+          formControlName="description"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Total Number Of Pages</mat-label>
+        <input
+          matInput
+          placeholder="Total Number Of Pages"
+          formControlName="totalNumberOfPages"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Language</mat-label>
+        <select matNativeControl required formControlName="language">
+          <option value="">Select Language</option>
+          <option [value]="language" *ngFor="let language of languages">
+            {{ language }}
+          </option>
+        </select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Genre</mat-label>
+        <input matInput placeholder="Genre" formControlName="genre" />
+      </mat-form-field>
+      <div class="btn-container">
+        <ng-content></ng-content>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          style="margin-left: 16px"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

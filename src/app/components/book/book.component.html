@@ -1,0 +1,30 @@
+<div *ngIf="book">
+  <h1 mat-dialog-title>Book Card</h1>
+  <div mat-dialog-content style="width: 600px; padding: 16px">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ book.description }}</p>
+        <mat-divider></mat-divider>
+      </mat-card-content>
+      <p>
+        Pages: <span>{{ book.totalNumberOfPages }}</span>
+      </p>
+      <p>
+        Language: <span>{{ book.language }}</span>
+      </p>
+      <p>
+        Genre: <span>{{ book.genre }}</span>
+      </p>
+      <mat-card-footer> </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
+<div *ngIf="!book">
+  <app-book-card>
+    <button mat-raised-button mat-dialog-close color="accent">Close</button>
+  </app-book-card>
+</div>

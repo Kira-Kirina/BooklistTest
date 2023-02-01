@@ -1,0 +1,17 @@
+// :host {
+//   display: block;
+// }
+.book-container {
+  width: 500px;
+}
+.book-title {
+  margin-top: 30px;
+  text-align: center;
+}
+.book-form {
+  display: flex;
+  flex-direction: column;
+}
+.btn-container {
+  align-self: flex-end;
+}

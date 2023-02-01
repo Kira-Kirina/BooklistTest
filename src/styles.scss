@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  background: -webkit-linear-gradient(90deg, hsl(75, 6%, 87%), #313131);
+  background: linear-gradient(90deg, #e0e1dd, #313131);
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.container {
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  padding: 5%;
+  flex-direction: column;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  font-size: 30px !important;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+}

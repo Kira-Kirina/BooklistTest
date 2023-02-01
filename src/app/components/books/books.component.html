@@ -1,0 +1,91 @@
+<div class="filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Search title or description</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="search"
+      (keyup)="applyFilter($event)"
+      #input
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Genre</mat-label>
+    <select
+      style="padding: 0 10px"
+      matNativeControl
+      #filterGenre
+      (change)="onChangeGenre(filterGenre.value)"
+    >
+      <option value="">Select Genre</option>
+      <option [value]="genre" *ngFor="let genre of genres">
+        {{ genre }}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Authors</mat-label>
+    <mat-select multiple>
+      <mat-select-filter
+        *ngIf="select1.focused"
+        [placeholder]="'Filtro'"
+        [array]="variablesGroups"
+        hasGroup="true"
+        groupArrayName="values"
+        displayMember="value"
+        (filteredReturn)="groups = $event"
+      ></mat-select-filter>
+      <mat-option
+        #filterAuthor
+        *ngFor="let author of authors"
+        (change)="onChangeAuthors(filterAuthor.value)"
+        [value]="author"
+        >{{ author }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="add-button-container">
+  <button mat-raised-button (click)="addData()" class="add-button">
+    Add Book
+  </button>
+</div>
+
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <td mat-cell *matCellDef="let row">{{ row.title }}</td>
+  </ng-container>
+  <ng-container matColumnDef="author">
+    <th mat-header-cell *matHeaderCellDef>Author</th>
+    <td mat-cell *matCellDef="let row">{{ row.author }}</td>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>Description</th>
+    <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+  </ng-container>
+  <ng-container matColumnDef="totalNumberOfPages">
+    <th mat-header-cell *matHeaderCellDef style="min-width: 40px">Pages</th>
+    <td mat-cell *matCellDef="let row">{{ row.totalNumberOfPages }}</td>
+  </ng-container>
+  <ng-container matColumnDef="language">
+    <th mat-header-cell *matHeaderCellDef style="min-width: 60px">Language</th>
+    <td mat-cell *matCellDef="let row">{{ row.language }}</td>
+  </ng-container>
+  <ng-container matColumnDef="genre">
+    <th mat-header-cell *matHeaderCellDef style="min-width: 0px">Genre</th>
+    <td mat-cell *matCellDef="let row">{{ row.genre }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="openDialog(row)"
+  ></tr>
+  <tr *matNoDataRow>
+    <td class="mat-cell" colspan="5">
+      Nothing was found for "{{ input.value }}"
+    </td>
+  </tr>
+</table>
