@@ -26,7 +26,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Authors</mat-label>
     <mat-select multiple>
-      <mat-select-filter
+      <!-- <mat-select-filter
         *ngIf="select1.focused"
         [placeholder]="'Filtro'"
         [array]="variablesGroups"
@@ -34,7 +34,7 @@
         groupArrayName="values"
         displayMember="value"
         (filteredReturn)="groups = $event"
-      ></mat-select-filter>
+      ></mat-select-filter> -->
       <mat-option
         #filterAuthor
         *ngFor="let author of authors"
