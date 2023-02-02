@@ -5,6 +5,7 @@ import { IBook } from 'src/shared/models/IBook';
 import { BookComponent } from '../book/book.component';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-books',
@@ -13,13 +14,22 @@ import { FormControl } from '@angular/forms';
 })
 export class BooksComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<IBook>;
+  maxNumberOfPages!: number;
   authorControl = new FormControl('');
   languageControl = new FormControl('');
   genreControl = new FormControl('');
+  pageControl = new FormControl([0, 2000]);
   booklist!: IBook[];
   book!: IBook;
   filterAuthors: IBook[] = [];
   dataSource!: MatTableDataSource<IBook>;
+
+  options: Options = {
+    floor: 0,
+    ceil: 2000,
+    step: 50,
+  };
+
   displayedColumns: string[] = [
     'title',
     'author',
@@ -55,7 +65,14 @@ export class BooksComponent implements OnInit {
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
       this.booklist = books as IBook[];
+      let numOfPages: number[] = [];
+      this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
       this.dataSource = new MatTableDataSource(this.booklist);
+
+      this.maxNumberOfPages = Math.max(...numOfPages);
+      if (this.maxNumberOfPages) {
+        this.options.ceil = this.maxNumberOfPages;
+      }
 
       this.dataSource.filterPredicate = function (
         data: any,
@@ -75,17 +92,23 @@ export class BooksComponent implements OnInit {
     });
 
     if (this.dataSource) {
+      this.pageControl.valueChanges.subscribe((value) => {
+        if (value) {
+          const [x, y] = value;
+
+          const data = this.booklist.filter((book) => {
+            return book.totalNumberOfPages >= x && book.totalNumberOfPages <= y;
+          });
+          this.dataSource.data = data;
+        }
+      });
       this.genreControl.valueChanges.subscribe((value) => {
         const data = this.booklist.filter((book) => {
-          console.log(value);
-          console.log(book.genre);
-
           return (
             book.genre.trim().toLocaleLowerCase() ===
             value?.trim().toLocaleLowerCase()
           );
         });
-        console.log(data);
         this.dataSource.data = data;
       });
       this.authorControl.valueChanges.subscribe((values) => {

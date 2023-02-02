@@ -35,3 +35,14 @@ table {
 mat-slider {
   width: 200px;
 }
+::ng-deep {
+  .ngx-slider .ngx-slider-pointer {
+    background-color: rgb(0, 81, 255) !important;
+    width: 20px !important;
+    height: 20px !important;
+    top: -9px !important;
+  }
+  .ngx-slider .ngx-slider-pointer:after {
+    display: none;
+  }
+}

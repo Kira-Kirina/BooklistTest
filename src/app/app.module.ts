@@ -18,7 +18,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { MatSliderModule } from '@angular/material/slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+// import { MatSliderModule } from '@angular/material/slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,9 +40,10 @@ import { MatSliderModule } from '@angular/material/slider';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatSliderModule,
+
     ReactiveFormsModule,
     FormsModule,
+    NgxSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
