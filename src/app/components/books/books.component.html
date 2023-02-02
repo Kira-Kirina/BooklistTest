@@ -25,20 +25,10 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Authors</mat-label>
-    <mat-select multiple>
-      <!-- <mat-select-filter
-        *ngIf="select1.focused"
-        [placeholder]="'Filtro'"
-        [array]="variablesGroups"
-        hasGroup="true"
-        groupArrayName="values"
-        displayMember="value"
-        (filteredReturn)="groups = $event"
-      ></mat-select-filter> -->
+    <mat-select multiple name="authors" [formControl]="authorControl">
       <mat-option
         #filterAuthor
         *ngFor="let author of authors"
-        (change)="onChangeAuthors(filterAuthor.value)"
         [value]="author"
         >{{ author }}</mat-option
       >

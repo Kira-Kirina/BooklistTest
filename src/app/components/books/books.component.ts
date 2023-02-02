@@ -4,7 +4,8 @@ import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
 import { BookComponent } from '../book/book.component';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-// import { FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { last, map, scan } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -13,10 +14,10 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 })
 export class BooksComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<IBook>;
-  // authorsControl = new FormControl('');
+  authorControl = new FormControl('');
   booklist!: IBook[];
-  book!: any;
-  // book!: IBook;
+  book!: IBook;
+  filterAuthors: IBook[] = [];
   dataSource!: MatTableDataSource<IBook>;
   displayedColumns: string[] = [
     'title',
@@ -44,8 +45,30 @@ export class BooksComponent implements OnInit {
       this.booklist = books as IBook[];
       this.dataSource = new MatTableDataSource(this.booklist);
     });
-  }
 
+    if (this.dataSource) {
+      this.authorControl.valueChanges
+        .pipe(
+          map((term) => [term!]),
+          scan((total, term) => {
+            const filredAuth = [...total, ...term];
+            return filredAuth;
+          }, [] as string[]),
+          map((items) => items[items.length - 1]),
+          map((values) => {
+            const data = this.booklist.filter((book) => {
+              if (values?.includes(book.author)) {
+                return book;
+              }
+              return;
+            });
+
+            this.dataSource.data = data;
+          })
+        )
+        .subscribe();
+    }
+  }
   getBookList() {
     return this.bookService.allBooks();
   }
@@ -69,6 +92,10 @@ export class BooksComponent implements OnInit {
   }
   onChangeAuthors(author: string) {
     console.log(author);
+    console.log(this.dataSource);
+    // const authors = this.dataSource.filteredData.filter((item) =>
+    //   authors.includes(item)
+    // );
 
     this.dataSource.filter = author.trim().toLowerCase();
   }
