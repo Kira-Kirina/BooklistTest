@@ -5,7 +5,6 @@ import { IBook } from 'src/shared/models/IBook';
 import { BookComponent } from '../book/book.component';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
-import { last, map, scan } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -15,6 +14,8 @@ import { last, map, scan } from 'rxjs';
 export class BooksComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<IBook>;
   authorControl = new FormControl('');
+  languageControl = new FormControl('');
+  genreControl = new FormControl('');
   booklist!: IBook[];
   book!: IBook;
   filterAuthors: IBook[] = [];
@@ -30,7 +31,10 @@ export class BooksComponent implements OnInit {
 
   get genres() {
     let genres: string[] = [];
-    this.booklist.forEach((book) => genres.push(book.genre));
+    this.booklist.forEach((book) => {
+      if (genres.includes(book.genre)) return;
+      genres.push(book.genre);
+    });
     return genres;
   }
   get authors() {
@@ -38,35 +42,72 @@ export class BooksComponent implements OnInit {
     this.booklist.forEach((book) => authors.push(book.author));
     return authors;
   }
+  get languages() {
+    let languages: string[] = [];
+    this.booklist.forEach((book) => {
+      if (languages.includes(book.language)) return;
+      languages.push(book.language);
+    });
+    return languages;
+  }
   constructor(private bookService: BookService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
       this.booklist = books as IBook[];
       this.dataSource = new MatTableDataSource(this.booklist);
+
+      this.dataSource.filterPredicate = function (
+        data: any,
+        filterValue: string
+      ) {
+        return (
+          data.title
+            .trim()
+            .toLocaleLowerCase()
+            .indexOf(filterValue.trim().toLocaleLowerCase()) >= 0 ||
+          data.description
+            .trim()
+            .toLocaleLowerCase()
+            .indexOf(filterValue.trim().toLocaleLowerCase()) >= 0
+        );
+      };
     });
 
     if (this.dataSource) {
-      this.authorControl.valueChanges
-        .pipe(
-          map((term) => [term!]),
-          scan((total, term) => {
-            const filredAuth = [...total, ...term];
-            return filredAuth;
-          }, [] as string[]),
-          map((items) => items[items.length - 1]),
-          map((values) => {
-            const data = this.booklist.filter((book) => {
-              if (values?.includes(book.author)) {
-                return book;
-              }
-              return;
-            });
+      this.genreControl.valueChanges.subscribe((value) => {
+        const data = this.booklist.filter((book) => {
+          console.log(value);
+          console.log(book.genre);
 
-            this.dataSource.data = data;
-          })
-        )
-        .subscribe();
+          return (
+            book.genre.trim().toLocaleLowerCase() ===
+            value?.trim().toLocaleLowerCase()
+          );
+        });
+        console.log(data);
+        this.dataSource.data = data;
+      });
+      this.authorControl.valueChanges.subscribe((values) => {
+        const data = this.booklist.filter((book) => {
+          if (values?.includes(book.author)) {
+            return book;
+          }
+          return;
+        });
+
+        this.dataSource.data = data;
+      });
+      this.languageControl.valueChanges.subscribe((values) => {
+        const data = this.booklist.filter((book) => {
+          if (values?.includes(book.language)) {
+            return book;
+          }
+          return;
+        });
+
+        this.dataSource.data = data;
+      });
     }
   }
   getBookList() {
@@ -87,21 +128,6 @@ export class BooksComponent implements OnInit {
     this.openDialog();
   }
   onChangeGenre(genre: string) {
-    console.log(genre);
     this.dataSource.filter = genre.trim().toLowerCase();
   }
-  onChangeAuthors(author: string) {
-    console.log(author);
-    console.log(this.dataSource);
-    // const authors = this.dataSource.filteredData.filter((item) =>
-    //   authors.includes(item)
-    // );
-
-    this.dataSource.filter = author.trim().toLowerCase();
-  }
-
-  // removeData() {
-  //   this.dataSource.filteredData.pop();
-  //   this.table.renderRows();
-  // }
 }

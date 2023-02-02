@@ -15,7 +15,7 @@
       style="padding: 0 10px"
       matNativeControl
       #filterGenre
-      (change)="onChangeGenre(filterGenre.value)"
+      [formControl]="genreControl"
     >
       <option value="">Select Genre</option>
       <option [value]="genre" *ngFor="let genre of genres">
@@ -31,6 +31,18 @@
         *ngFor="let author of authors"
         [value]="author"
         >{{ author }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Language</mat-label>
+    <mat-select multiple name="languages" [formControl]="languageControl">
+      <mat-option
+        #filterLanguage
+        *ngFor="let language of languages"
+        [value]="language"
+        >{{ language }}</mat-option
       >
     </mat-select>
   </mat-form-field>

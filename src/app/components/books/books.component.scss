@@ -26,35 +26,12 @@ table {
 }
 .add-button-container {
   display: flex;
-  //   width: 100vw;
   justify-content: flex-end;
   margin-bottom: 16px;
-  //   & button {
-  //     align-self: flex-end;
-  //   }
 }
 .add-button {
   background: rgb(236, 236, 236);
 }
-// .booklist {
-//   display: flex;
-//   flex-direction: column;
-// }
-// .book {
-//   margin-bottom: 16px;
-//   cursor: pointer;
-// }
-// .example-card {
-//   max-width: 500px;
-// }
-// .book-footer {
-//   padding: 16px;
-//   display: flex;
-//   justify-content: space-around;
-//   align-items: center;
-//   flex-wrap: wrap;
-//   & span {
-//     font-size: 12px;
-//     font-style: italic;
-//   }
-// }
+mat-slider {
+  width: 200px;
+}

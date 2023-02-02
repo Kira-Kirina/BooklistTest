@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BooklistComponent } from './components/booklist/booklist.component';
+
+import { BookComponent } from './components/book/book.component';
+import { BooksComponent } from './components/books/books.component';
+import { BookCardComponent } from './components/book-card/book-card.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -13,10 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { BookComponent } from './components/book/book.component';
-import { BooksComponent } from './components/books/books.component';
-import { BookCardComponent } from './components/book-card/book-card.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +39,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatSliderModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
