@@ -1,7 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IBook } from 'src/shared/models/IBook';
-import { DialogData } from '../booklist/booklist.component';
 
 @Component({
   selector: 'app-book',

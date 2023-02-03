@@ -2,11 +2,14 @@
   <h2 class="book-title">Add Book</h2>
   <div class="book-form__container">
     <form [formGroup]="bookForm" class="book-form" (ngSubmit)="onBookSubmit()">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="form-field">
         <mat-label>Title</mat-label>
-        <input matInput placeholder="Title" formControlName="title" />
+        <input matInput placeholder="Title" formControlName="title" required />
+        <mat-error *ngIf="!bookForm.value.title"
+          >This field is required.</mat-error
+        >
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Authors</mat-label>
         <select matNativeControl required formControlName="author">
           <option value="">Select Author</option>
@@ -15,25 +18,42 @@
           </option>
           >
         </select>
+        <mat-error *ngIf="!bookForm.value.author"
+          >This field is required.</mat-error
+        >
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="form-field">
         <mat-label>Description</mat-label>
         <textarea
+          required
           matInput
           placeholder="Book description..."
           formControlName="description"
         ></textarea>
+        <mat-error *ngIf="!bookForm.value.description"
+          >This field is required.</mat-error
+        >
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="form-field">
         <mat-label>Total Number Of Pages</mat-label>
         <input
+          required
           matInput
           placeholder="Total Number Of Pages"
           formControlName="totalNumberOfPages"
         />
+        <mat-error *ngIf="!bookForm.value.totalNumberOfPages"
+          >This field is required.</mat-error
+        >
+        <mat-error
+          *ngIf="bookForm.get('totalNumberOfPages')?.hasError('pattern')"
+        >
+          Only numbers allowed.
+        </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Language</mat-label>
         <select matNativeControl required formControlName="language">
           <option value="">Select Language</option>
@@ -41,10 +61,16 @@
             {{ language }}
           </option>
         </select>
+        <mat-error *ngIf="!bookForm.value.language"
+          >This field is required.</mat-error
+        >
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="form-field">
         <mat-label>Genre</mat-label>
-        <input matInput placeholder="Genre" formControlName="genre" />
+        <input matInput placeholder="Genre" formControlName="genre" required />
+        <mat-error *ngIf="!bookForm.value.genre"
+          >This field is required.</mat-error
+        >
       </mat-form-field>
       <div class="btn-container">
         <ng-content></ng-content>

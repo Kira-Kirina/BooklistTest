@@ -1,6 +1,3 @@
-// :host {
-//   display: block;
-// }
 .book-container {
   width: 500px;
 }
@@ -14,4 +11,7 @@
 }
 .btn-container {
   align-self: flex-end;
+}
+.form-field {
+  margin-bottom: 5px;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
 
@@ -9,31 +9,33 @@ import { IBook } from 'src/shared/models/IBook';
   styleUrls: ['./book-card.component.scss'],
 })
 export class BookCardComponent implements OnInit {
-  // booklist!: IBook[];
   authors: string[] = [];
   languages: string[] = [];
-  bookForm = new FormGroup({
-    title: new FormControl(''),
-    author: new FormControl(''),
-    description: new FormControl(''),
-    totalNumberOfPages: new FormControl(''),
-    language: new FormControl(''),
-    genre: new FormControl(''),
-  });
+  bookForm!: FormGroup;
+
+  get fc() {
+    return this.bookForm.controls;
+  }
 
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
+    this.bookForm = new FormGroup({
+      title: new FormControl(''),
+      author: new FormControl(''),
+      description: new FormControl(''),
+      totalNumberOfPages: new FormControl('', Validators.pattern(/^[0-9]\d*$/)),
+      language: new FormControl(''),
+      genre: new FormControl(''),
+    });
     this.bookService.getAllAuthors().subscribe((data) => (this.authors = data));
     this.bookService
       .getAllLanguages()
       .subscribe((data) => (this.languages = data));
   }
-  // getBookList() {
-  //   return this.bookService.getAllBooks();
-  // }
+
   onBookSubmit() {
-    if (!this.bookForm.value) return;
+    if (!this.bookForm.valid) return;
     const book: IBook = {
       title: this.bookForm.value.title!,
       author: this.bookForm.value.author!,
@@ -43,6 +45,7 @@ export class BookCardComponent implements OnInit {
       genre: this.bookForm.value.genre!,
     };
     this.bookService.addBook(book);
+    alert('Book created!');
     this.bookForm.reset();
   }
 }
