@@ -1,0 +1,16 @@
+.authors-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.mat-list {
+  max-width: 600px;
+  width: 100%;
+}
+.item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 10px 0;
+}

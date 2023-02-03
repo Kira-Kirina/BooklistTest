@@ -4,16 +4,15 @@ export const AUTHORS_MOCK = [
   'Lewis Carroll',
   'Fyodor Dostoevsky',
   'Leo Tolstoy',
-  'Alexander Pushkin',
-  'William Shakespeare',
-  'Agatha Christie',
+  'Miguel de Cervantes',
+  'Charles Dickens',
+  'Cao Xueqin',
 ];
 export const LANGUAGES_MOCK = [
   'Spanish',
   'English',
   'Russian',
-  'Turkish',
-  'Korean',
-  'French',
+  'Chinese',
+  'Hindi',
   'German',
 ];

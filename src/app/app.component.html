@@ -1,4 +1,13 @@
 <div class="container">
   <h1 class="title">BOOKLIST</h1>
-  <app-books></app-books>
+  <ul class="nav">
+    <li class="nav-item">
+      <a routerLink="/" class="nav-link">Books</a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/authors" class="nav-link">Authors</a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
 </div>

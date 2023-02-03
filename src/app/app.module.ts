@@ -19,6 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { AuthorsComponent } from './components/authors/authors.component';
+import { AuthorFormComponent } from './components/author-form/author-form.component';
+import { MatDividerModule } from '@angular/material/divider';
 // import { MatSliderModule } from '@angular/material/slider';
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     BookComponent,
     BooksComponent,
     BookCardComponent,
+    AuthorsComponent,
+    AuthorFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-
+    MatDividerModule,
     ReactiveFormsModule,
     FormsModule,
     NgxSliderModule,
