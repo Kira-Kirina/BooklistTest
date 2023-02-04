@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BooklistComponent } from './components/booklist/booklist.component';
 
 import { BookComponent } from './components/book/book.component';
 import { BooksComponent } from './components/books/books.component';
@@ -22,13 +21,12 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { AuthorsComponent } from './components/authors/authors.component';
 import { AuthorFormComponent } from './components/author-form/author-form.component';
 import { MatDividerModule } from '@angular/material/divider';
-
 import { HttpClientModule } from '@angular/common/http';
 // import { MatSliderModule } from '@angular/material/slider';
+
 @NgModule({
   declarations: [
     AppComponent,
-    BooklistComponent,
     BookComponent,
     BooksComponent,
     BookCardComponent,

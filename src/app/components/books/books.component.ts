@@ -17,13 +17,9 @@ export class BooksComponent implements OnInit {
   formControl!: FormGroup;
   @ViewChild(MatTable) table!: MatTable<IBook>;
   maxNumberOfPages!: number;
-  authorControl = new FormControl('');
-  languageControl = new FormControl('');
-  genreControl = new FormControl('');
   pageControl = new FormControl([0, 2000]);
   booklist!: IBook[];
   book!: IBook;
-  filterAuthors: IBook[] = [];
   dataSource!: MatTableDataSource<IBook>;
 
   options: Options = {
