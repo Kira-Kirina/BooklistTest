@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', component: BooksComponent },
   { path: 'authors', component: AuthorsComponent },
   { path: 'author/add', component: AuthorFormComponent },
-  { path: 'author/edit/:author', component: AuthorFormComponent },
+  { path: 'author/edit/:id', component: AuthorFormComponent },
 ];
 
 @NgModule({

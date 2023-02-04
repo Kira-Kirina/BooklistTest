@@ -1,20 +1,18 @@
-<ng-container *ngIf="authorModel$ | async as authorModel">
-  <form [formGroup]="authorForm" (ngSubmit)="submit()" class="author-form">
-    <mat-form-field appearance="fill">
-      <mat-label>{{ chekAuthor ? " Create Athor" : "Add Author" }}</mat-label>
-      <input matInput placeholder="Author" formControlName="author" />
-      <mat-error *ngIf="!authorForm.value.author"
-        >This field is required.</mat-error
-      >
-      <mat-error *ngIf="authorForm.get('author')?.hasError('minlength')"
-        >Minimum 6 characters.</mat-error
-      >
-    </mat-form-field>
+<form [formGroup]="authorForm" (ngSubmit)="submit()" class="author-form">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ authorId ? " Update Athor" : "Add Author" }}</mat-label>
+    <input matInput placeholder="Author" formControlName="name" />
+    <mat-error *ngIf="!authorForm.value.name"
+      >This field is required.</mat-error
+    >
+    <mat-error *ngIf="authorForm.get('author')?.hasError('minlength')"
+      >Minimum 3 characters.</mat-error
+    >
+  </mat-form-field>
 
-    <div>
-      <button mat-raised-button type="submit" color="primary">
-        {{ chekAuthor ? " Edit" : "Add" }}
-      </button>
-    </div>
-  </form>
-</ng-container>
+  <div>
+    <button mat-raised-button type="submit" color="primary">
+      {{ authorId ? " Edit" : "Add" }}
+    </button>
+  </div>
+</form>

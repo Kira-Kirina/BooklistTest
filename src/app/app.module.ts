@@ -23,6 +23,7 @@ import { AuthorsComponent } from './components/authors/authors.component';
 import { AuthorFormComponent } from './components/author-form/author-form.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { StrTrimPipe } from './str-trim.pipe';
+import { HttpClientModule } from '@angular/common/http';
 // import { MatSliderModule } from '@angular/material/slider';
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { StrTrimPipe } from './str-trim.pipe';
     ReactiveFormsModule,
     FormsModule,
     NgxSliderModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

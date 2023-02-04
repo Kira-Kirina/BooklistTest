@@ -1,4 +1,4 @@
-<div class="authors-list" *ngIf="authors$ | async as authors">
+<div class="authors-list">
   <div class="btn-container">
     <a routerLink="/author/add" class="btn">Add Author</a>
   </div>
@@ -6,11 +6,9 @@
   <mat-list role="list">
     <ng-container *ngFor="let author of authors">
       <div class="item-container">
-        <mat-list-item role="listitem">{{ author }}</mat-list-item>
+        <mat-list-item role="listitem">{{ author.name }}</mat-list-item>
         <div class="btn-container btn-container__edit">
-          <a routerLink="/author/edit/{{ author | strTrim }}" class="btn"
-            >Edit</a
-          >
+          <a routerLink="/author/edit/{{ author.id }}" class="btn">Edit</a>
         </div>
       </div>
       <mat-divider></mat-divider>
