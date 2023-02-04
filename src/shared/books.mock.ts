@@ -5,9 +5,9 @@ export const BOOKS_MOCK: IBook[] = [
     title: 'The Last Wish',
     author: 'Andrzej Sapkowski',
     description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur cupiditate ipsum, neque in nam recusandae repudiandae quaerat veritatis molestiae quos. ',
+      'While not all of the documentation for RxJS reflects this terminology, it is a goal of the team to ensure it does, and to ensure the language and names around the library use this document as a source of truth and unified language.',
     totalNumberOfPages: 400,
-    language: ' Polish',
+    language: 'Polish',
     genre: 'Fiction',
   },
   {
@@ -16,7 +16,16 @@ export const BOOKS_MOCK: IBook[] = [
     description:
       'Guided tutorials with hands-on coding to develop practical experience and build working code and apps. Start a Firebase codelab for iOS, Android, or Web.',
     totalNumberOfPages: 496,
-    language: ' German',
+    language: 'German',
+    genre: 'Fiction',
+  },
+  {
+    title: 'Some book',
+    author: 'Some Author',
+    description:
+      'Any system or thing that is the source of values that are being pushed out of the observable subscription to the consumer. This can be a wide variety of things, from a WebSocket to a simple iteration over an Array. ',
+    totalNumberOfPages: 356,
+    language: 'German',
     genre: 'Fiction',
   },
   {
@@ -25,7 +34,7 @@ export const BOOKS_MOCK: IBook[] = [
     description:
       'Formal reference documentation for Firebase SDKs, Firebase REST APIs, and Firebase tools. Find Firebase reference docs under the Reference tab at the top of the page.',
     totalNumberOfPages: 92,
-    language: ' English',
+    language: 'English',
     genre: 'Fantasy',
   },
   {

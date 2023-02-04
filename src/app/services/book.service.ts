@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
-  from,
   map,
   merge,
   Observable,
@@ -22,7 +21,7 @@ export class BookService {
   public bookObservable: Observable<IBook> = this.bookSubject.asObservable();
   private selectedAuthorSubject = new BehaviorSubject<string>('');
   public selectedAuthorObservable = this.selectedAuthorSubject.asObservable();
-  private addAuthorSubject = new BehaviorSubject<string>('');
+  private addAuthorSubject = new Subject<string>();
   public addAuthorObservable = this.addAuthorSubject.asObservable();
   constructor() {}
   getAllBooks(): Observable<IBook[]> {
@@ -64,6 +63,9 @@ export class BookService {
     this.addAuthorSubject.next(author);
   }
   allAuthors(): Observable<string[]> {
+    this.addAuthorObservable.subscribe((x) => {
+      console.log(x, 'x');
+    });
     return merge(
       this.getAllAuthors(),
       this.addAuthorObservable.pipe(
@@ -75,10 +77,9 @@ export class BookService {
     ).pipe(
       scan((authors, author) => {
         console.log(authors, 'authors');
-        console.log(author, 'author');
         const data = [...authors, ...author];
 
-        console.log(data, 'data');
+        // console.log(data, 'data');
         return data;
       }, [] as string[])
     );

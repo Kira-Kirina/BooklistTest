@@ -12,7 +12,7 @@ import { BookService } from 'src/app/services/book.service';
 })
 export class AuthorFormComponent implements OnInit {
   authorForm = new FormGroup({
-    author: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    author: new FormControl('', [Validators.required, Validators.minLength(3)]),
   });
 
   chekAuthor!: string;
@@ -45,10 +45,12 @@ export class AuthorFormComponent implements OnInit {
     if (!this.authorForm.valid) return;
 
     if (this.chekAuthor) {
+      console.log(this.chekAuthor);
       // this.bookService.updateAuthor(this.authorForm.value.author!);
       // console.log(this.authorForm.value.author);
       console.log('update');
     } else {
+      console.log(this.chekAuthor);
       if (this.authorForm.value.author) {
         this.bookService.addAuthor(this.authorForm.value.author);
       }

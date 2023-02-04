@@ -4,7 +4,7 @@ import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
 import { BookComponent } from '../book/book.component';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
@@ -13,6 +13,7 @@ import { Options } from '@angular-slider/ngx-slider';
   styleUrls: ['./books.component.scss'],
 })
 export class BooksComponent implements OnInit {
+  formControl!: FormGroup;
   @ViewChild(MatTable) table!: MatTable<IBook>;
   maxNumberOfPages!: number;
   authorControl = new FormControl('');
@@ -60,7 +61,11 @@ export class BooksComponent implements OnInit {
     });
     return languages;
   }
-  constructor(private bookService: BookService, public dialog: MatDialog) {}
+  constructor(
+    private bookService: BookService,
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
@@ -74,21 +79,24 @@ export class BooksComponent implements OnInit {
         this.options.ceil = this.maxNumberOfPages;
       }
 
-      this.dataSource.filterPredicate = function (
-        data: any,
-        filterValue: string
-      ) {
-        return (
-          data.title
-            .trim()
-            .toLocaleLowerCase()
-            .indexOf(filterValue.trim().toLocaleLowerCase()) >= 0 ||
-          data.description
-            .trim()
-            .toLocaleLowerCase()
-            .indexOf(filterValue.trim().toLocaleLowerCase()) >= 0
-        );
-      };
+      this.customFilterSetup();
+      this.formControl = this.formBuilder.group({
+        title: '',
+        genre: '',
+        author: '',
+        language: '',
+      });
+      this.formControl.valueChanges.subscribe((value) => {
+        const filter = {
+          ...value,
+          author: value.author,
+          description: value.title,
+          genre: value.genre,
+          title: value.title,
+          language: value.language,
+        } as string;
+        this.dataSource.filter = filter;
+      });
     });
 
     if (this.dataSource) {
@@ -102,36 +110,40 @@ export class BooksComponent implements OnInit {
           this.dataSource.data = data;
         }
       });
-      this.genreControl.valueChanges.subscribe((value) => {
-        const data = this.booklist.filter((book) => {
-          return (
-            book.genre.trim().toLocaleLowerCase() ===
-            value?.trim().toLocaleLowerCase()
-          );
-        });
-        this.dataSource.data = data;
-      });
-      this.authorControl.valueChanges.subscribe((values) => {
-        const data = this.booklist.filter((book) => {
-          if (values?.includes(book.author)) {
-            return book;
-          }
-          return;
-        });
-
-        this.dataSource.data = data;
-      });
-      this.languageControl.valueChanges.subscribe((values) => {
-        const data = this.booklist.filter((book) => {
-          if (values?.includes(book.language)) {
-            return book;
-          }
-          return;
-        });
-
-        this.dataSource.data = data;
-      });
     }
+  }
+
+  customFilterSetup() {
+    this.dataSource.filterPredicate = ((data, filter: any) => {
+      const a =
+        !filter.title ||
+        data.title
+          .trim()
+          .toLowerCase()
+          .indexOf(filter.title.trim().toLowerCase()) >= 0 ||
+        data
+          .description!.trim()
+          .toLowerCase()
+          .indexOf(filter.description.trim().toLowerCase()) >= 0;
+      const b =
+        !filter.genre ||
+        data.genre.trim().toLowerCase() === filter.genre.trim().toLowerCase();
+      const c =
+        !filter.author || filter.author.includes(data.author)
+          ? data.author
+          : filter.author.length < 1
+          ? data.author
+          : null;
+
+      const d =
+        !filter.language || filter.language.includes(data.language)
+          ? data.language
+          : filter.language.length < 1
+          ? data.language
+          : null;
+
+      return a && b && c && d;
+    }) as (arg0: IBook, arg1: string) => boolean;
   }
   getBookList() {
     return this.bookService.allBooks();
@@ -143,14 +155,8 @@ export class BooksComponent implements OnInit {
       },
     });
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLocaleLowerCase();
-  }
+
   addData() {
     this.openDialog();
-  }
-  onChangeGenre(genre: string) {
-    this.dataSource.filter = genre.trim().toLowerCase();
   }
 }

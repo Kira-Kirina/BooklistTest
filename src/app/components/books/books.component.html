@@ -1,11 +1,11 @@
-<div class="filter-container">
+<form class="filter-container" [formGroup]="formControl">
   <mat-form-field appearance="fill">
     <mat-label>Search title or description</mat-label>
     <input
       type="text"
       matInput
       placeholder="search"
-      (keyup)="applyFilter($event)"
+      formControlName="title"
       #input
     />
   </mat-form-field>
@@ -15,7 +15,7 @@
       style="padding: 0 10px"
       matNativeControl
       #filterGenre
-      [formControl]="genreControl"
+      formControlName="genre"
     >
       <option value="">Select Genre</option>
       <option [value]="genre" *ngFor="let genre of genres">
@@ -25,7 +25,7 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Authors</mat-label>
-    <mat-select multiple name="authors" [formControl]="authorControl">
+    <mat-select multiple name="authors" formControlName="author">
       <mat-option
         #filterAuthor
         *ngFor="let author of authors"
@@ -37,7 +37,7 @@
   <ngx-slider [options]="options" [formControl]="pageControl"></ngx-slider>
   <mat-form-field appearance="fill">
     <mat-label>Language</mat-label>
-    <mat-select multiple name="languages" [formControl]="languageControl">
+    <mat-select multiple name="languages" formControlName="language">
       <mat-option
         #filterLanguage
         *ngFor="let language of languages"
@@ -46,7 +46,7 @@
       >
     </mat-select>
   </mat-form-field>
-</div>
+</form>
 
 <div class="add-button-container">
   <button mat-raised-button (click)="addData()" class="add-button">
