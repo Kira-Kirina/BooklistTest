@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { IAuthor } from 'src/shared/models/IAuthor';
 
+const BASE_URL = 'https://authorstest-ee96c-default-rtdb.firebaseio.com';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,9 +12,7 @@ export class AuthorService {
   constructor(private http: HttpClient) {}
   getAuthorsFromServer(): Observable<IAuthor[]> {
     return this.http
-      .get<{ [id: string]: IAuthor }>(
-        'https://foodmine-bc936-default-rtdb.firebaseio.com/authors.json'
-      )
+      .get<{ [id: string]: IAuthor }>(`${BASE_URL}/authors.json`)
       .pipe(
         map((authors) => {
           let authorsData: IAuthor[] = [];
@@ -25,10 +25,7 @@ export class AuthorService {
   }
   addAuthorToServer(author: IAuthor): Observable<IAuthor> {
     return this.http
-      .post<{ id: string }>(
-        `https://foodmine-bc936-default-rtdb.firebaseio.com/authors.json`,
-        author
-      )
+      .post<{ id: string }>(`${BASE_URL}/authors.json`, author)
       .pipe(
         map((id) => {
           console.log(id);
@@ -42,13 +39,11 @@ export class AuthorService {
   }
   updateAuthorToServer(author: IAuthor): Observable<IAuthor> {
     return this.http.patch<IAuthor>(
-      `https://foodmine-bc936-default-rtdb.firebaseio.com/authors/${author.id}.json`,
+      `${BASE_URL}/authors/${author.id}.json`,
       author
     );
   }
   getAuthorFromServer(id: string): Observable<IAuthor> {
-    return this.http.get<IAuthor>(
-      `https://foodmine-bc936-default-rtdb.firebaseio.com/authors/${id}.json`
-    );
+    return this.http.get<IAuthor>(`${BASE_URL}/authors/${id}.json`);
   }
 }
