@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
 import { BookComponent } from '../book/book.component';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
+import { BookCardComponent } from '../book-card/book-card.component';
 
 @Component({
   selector: 'app-books',
@@ -70,49 +71,50 @@ export class BooksComponent implements OnInit {
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
       this.booklist = books as IBook[];
-      let numOfPages: number[] = [];
-      this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
       this.dataSource = new MatTableDataSource(this.booklist);
-
-      this.maxNumberOfPages = Math.max(...numOfPages);
-      if (this.maxNumberOfPages) {
-        this.options.ceil = this.maxNumberOfPages;
-      }
-
-      this.customFilterSetup();
-      this.formControl = this.formBuilder.group({
-        title: '',
-        genre: '',
-        author: '',
-        language: '',
-      });
-      this.formControl.valueChanges.subscribe((value) => {
-        const filter = {
-          ...value,
-          author: value.author,
-          description: value.title,
-          genre: value.genre,
-          title: value.title,
-          language: value.language,
-        } as string;
-        this.dataSource.filter = filter;
-      });
+    });
+    this.getMaxNumberOfPages();
+    this.customFilterSetup();
+    this.formControl = this.formBuilder.group({
+      title: '',
+      genre: '',
+      author: '',
+      language: '',
+    });
+    this.formControl.valueChanges.subscribe((value) => {
+      const filter = {
+        ...value,
+        author: value.author,
+        description: value.title,
+        genre: value.genre,
+        title: value.title,
+        language: value.language,
+      } as string;
+      this.dataSource.filter = filter;
     });
 
-    if (this.dataSource) {
-      this.pageControl.valueChanges.subscribe((value) => {
-        if (value) {
-          const [x, y] = value;
+    this.pageControl.valueChanges.subscribe((value) => {
+      if (value) {
+        const [x, y] = value;
 
-          const data = this.booklist.filter((book) => {
-            return book.totalNumberOfPages >= x && book.totalNumberOfPages <= y;
-          });
-          this.dataSource.data = data;
-        }
-      });
+        const data = this.booklist.filter((book) => {
+          return book.totalNumberOfPages >= x && book.totalNumberOfPages <= y;
+        });
+        this.dataSource.data = data;
+      }
+    });
+  }
+  getBookList() {
+    return this.bookService.allBooks();
+  }
+  getMaxNumberOfPages() {
+    let numOfPages: number[] = [];
+    this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
+    this.maxNumberOfPages = Math.max(...numOfPages);
+    if (this.maxNumberOfPages) {
+      this.options.ceil = this.maxNumberOfPages;
     }
   }
-
   customFilterSetup() {
     this.dataSource.filterPredicate = ((data, filter: any) => {
       const a =
@@ -145,18 +147,19 @@ export class BooksComponent implements OnInit {
       return a && b && c && d;
     }) as (arg0: IBook, arg1: string) => boolean;
   }
-  getBookList() {
-    return this.bookService.allBooks();
-  }
-  openDialog(book?: IBook) {
-    this.dialog.open(BookComponent, {
-      data: {
-        book: book,
-      },
-    });
+
+  openBookCard(book: IBook) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '50%';
+    dialogConfig.data = {
+      book: book,
+    };
+    this.dialog.open(BookComponent, dialogConfig);
   }
 
-  addData() {
-    this.openDialog();
+  openBookForm() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '60%';
+    this.dialog.open(BookCardComponent, dialogConfig);
   }
 }

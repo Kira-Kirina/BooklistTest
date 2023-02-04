@@ -1,6 +1,6 @@
 <div class="book-container">
-  <h2 class="book-title">Add Book</h2>
-  <div class="book-form__container">
+  <h2 class="book-title" mat-dialog-title>Add Book</h2>
+  <div class="book-form__container" mat-dialog-content>
     <form [formGroup]="bookForm" class="book-form" (ngSubmit)="onBookSubmit()">
       <mat-form-field class="form-field">
         <mat-label>Title</mat-label>
@@ -51,6 +51,11 @@
         >
           Only numbers allowed.
         </mat-error>
+        <mat-error
+          *ngIf="bookForm.get('totalNumberOfPages')?.hasError('maxlength')"
+        >
+          Maximum 4 characters.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
@@ -73,7 +78,7 @@
         >
       </mat-form-field>
       <div class="btn-container">
-        <ng-content></ng-content>
+        <button mat-raised-button mat-dialog-close color="accent">Close</button>
         <button
           mat-raised-button
           color="primary"

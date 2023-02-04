@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
 
@@ -17,14 +19,20 @@ export class BookCardComponent implements OnInit {
     return this.bookForm.controls;
   }
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private dialogRef: MatDialogRef<BookCardComponent>
+  ) {}
 
   ngOnInit(): void {
     this.bookForm = new FormGroup({
       title: new FormControl(''),
       author: new FormControl(''),
       description: new FormControl(''),
-      totalNumberOfPages: new FormControl('', Validators.pattern(/^[0-9]\d*$/)),
+      totalNumberOfPages: new FormControl('', [
+        Validators.pattern(/^[0-9]\d*$/),
+        Validators.maxLength(4),
+      ]),
       language: new FormControl(''),
       genre: new FormControl(''),
     });
@@ -34,6 +42,9 @@ export class BookCardComponent implements OnInit {
       .subscribe((data) => (this.languages = data));
   }
 
+  close() {
+    this.dialogRef.close();
+  }
   onBookSubmit() {
     if (!this.bookForm.valid) return;
     const book: IBook = {
@@ -46,6 +57,8 @@ export class BookCardComponent implements OnInit {
     };
     this.bookService.addBook(book);
     alert('Book created!');
-    this.bookForm.reset();
+    this.close();
+
+    // this.bookForm.reset();
   }
 }

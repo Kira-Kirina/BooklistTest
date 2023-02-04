@@ -49,7 +49,7 @@
 </form>
 
 <div class="add-button-container">
-  <button mat-raised-button (click)="addData()" class="add-button">
+  <button mat-raised-button (click)="openBookForm()" class="add-button">
     Add Book
   </button>
 </div>
@@ -83,7 +83,7 @@
   <tr
     mat-row
     *matRowDef="let row; columns: displayedColumns"
-    (click)="openDialog(row)"
+    (click)="openBookCard(row)"
   ></tr>
   <tr *matNoDataRow>
     <td
