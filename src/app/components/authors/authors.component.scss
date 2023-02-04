@@ -1,3 +1,5 @@
+@use "../../../shared/styles/mixins" as *;
+
 .authors-list {
   display: flex;
   flex-direction: column;
@@ -7,10 +9,23 @@
 .mat-list {
   max-width: 600px;
   width: 100%;
+  .item-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 10px 0;
+  }
 }
-.item-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 10px 0;
+
+.btn-container {
+  @include btnlike-link();
+  &.btn-container__edit {
+    background: #673ab7;
+  }
+
+  background: #ffd740;
+  & .btn {
+    font-size: 14px;
+    font-weight: 500;
+  }
 }

@@ -7,6 +7,7 @@ export const AUTHORS_MOCK = [
   'Miguel de Cervantes',
   'Charles Dickens',
   'Cao Xueqin',
+  'Ved Prakash Sharma',
 ];
 export const LANGUAGES_MOCK = [
   'Spanish',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookService } from 'src/app/services/book.service';
 
@@ -6,14 +6,11 @@ import { BookService } from 'src/app/services/book.service';
   selector: 'app-authors',
   templateUrl: './authors.component.html',
   styleUrls: ['./authors.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorsComponent implements OnInit {
-  authors$!: Observable<string[]>;
+  authors$ = this.bookService.allAuthors();
   constructor(private bookService: BookService) {}
 
-  ngOnInit(): void {
-    this.authors$ = this.bookService.getAllAuthors();
-  }
-  editAuthor(author: string) {}
-  addAuthor() {}
+  ngOnInit(): void {}
 }

@@ -1,1 +1,20 @@
-<p>author-form works!</p>
+<ng-container *ngIf="authorModel$ | async as authorModel">
+  <form [formGroup]="authorForm" (ngSubmit)="submit()" class="author-form">
+    <mat-form-field appearance="fill">
+      <mat-label>{{ chekAuthor ? " Create Athor" : "Add Author" }}</mat-label>
+      <input matInput placeholder="Author" formControlName="author" />
+      <mat-error *ngIf="!authorForm.value.author"
+        >This field is required.</mat-error
+      >
+      <mat-error *ngIf="authorForm.get('author')?.hasError('minlength')"
+        >Minimum 6 characters.</mat-error
+      >
+    </mat-form-field>
+
+    <div>
+      <button mat-raised-button type="submit" color="primary">
+        {{ chekAuthor ? " Edit" : "Add" }}
+      </button>
+    </div>
+  </form>
+</ng-container>

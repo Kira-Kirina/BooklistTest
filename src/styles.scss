@@ -6,11 +6,12 @@
   margin: 0;
   box-sizing: border-box;
 }
+html {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 html,
 body {
   height: 100%;
-  background: -webkit-linear-gradient(100deg, hsl(75, 6%, 87%), #3f3f3f);
-  background: linear-gradient(100deg, #e0e1dd, #3f3f3f);
 }
 body {
   margin: 0;
