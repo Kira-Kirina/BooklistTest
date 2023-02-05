@@ -55,9 +55,16 @@ export class BookCardComponent implements OnInit {
       language: this.bookForm.value.language!,
       genre: this.bookForm.value.genre!,
     };
-    this.bookService.addBook(book);
-    alert('Book created!');
-    this.close();
+    this.bookService.addBookToServer(book).subscribe({
+      next: () => {
+        this.bookService.addBook(book);
+        alert('Book created!');
+        this.close();
+      },
+      error: () => {
+        alert('Sometring went wrong');
+      },
+    });
 
     // this.bookForm.reset();
   }

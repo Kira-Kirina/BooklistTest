@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, merge, Observable, of, scan, Subject } from 'rxjs';
+import { map, merge, Observable, of, scan, Subject, tap } from 'rxjs';
 import { BOOKS_MOCK } from 'src/shared/books.mock';
 import { IBook } from 'src/shared/models/IBook';
 import { AUTHORS_MOCK, LANGUAGES_MOCK } from 'src/shared/select-data.mock';
@@ -26,8 +26,15 @@ export class BookService {
           return booksData;
         })
       );
-    // return of(BOOKS_MOCK);
   }
+
+  addBookToServer(book: IBook) {
+    return this.http.post<IBook>(`${BASE_URL}/books.json`, book);
+  }
+  // getAllBooks(): Observable<IBook[]> {
+  //   return of(BOOKS_MOCK);
+  // }
+
   addBook(book: IBook) {
     this.bookSubject.next(book);
   }

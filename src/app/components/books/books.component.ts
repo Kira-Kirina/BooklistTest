@@ -13,23 +13,22 @@ import { BookCardComponent } from '../book-card/book-card.component';
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss'],
 })
-export class BooksComponent implements OnInit, AfterViewInit {
+export class BooksComponent implements OnInit {
   formControl!: FormGroup;
   @ViewChild(MatTable) table!: MatTable<IBook>;
   maxNumberOfPages!: number;
   value: number = 40;
   highValue: number = 2000;
-  pageControl = new FormControl([0, 2000]);
   booklist!: IBook[];
   book!: IBook;
   dataSource!: MatTableDataSource<IBook>;
 
-  options: Options = {};
-  // options: Options = {
-  //   floor: 0,
-  //   ceil: 2000,
-  //   step: 50,
-  // };
+  pageControl = new FormControl([0, 2000]);
+  options: Options = {
+    floor: 0,
+    ceil: 2000,
+    step: 50,
+  };
 
   displayedColumns: string[] = [
     'title',
@@ -48,14 +47,6 @@ export class BooksComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {}
-  ngAfterViewInit(): void {
-    let rangeOptions: Options = {
-      floor: 0,
-      ceil: this.maxNumberOfPages,
-      step: 50,
-    };
-    this.options = rangeOptions;
-  }
 
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
@@ -64,9 +55,12 @@ export class BooksComponent implements OnInit, AfterViewInit {
       this.getGenres();
       this.getAuthors();
       this.getLanguages();
-      this.getMaxNumberOfPages();
 
-      // this.getSliderOptions();
+      let numOfPages: number[] = [];
+      this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
+      this.maxNumberOfPages = Math.max(...numOfPages);
+
+      this.getSliderOptions();
       this.customFilterSetup();
     });
     this.formControl = this.formBuilder.group({
@@ -103,9 +97,11 @@ export class BooksComponent implements OnInit, AfterViewInit {
   }
 
   getSliderOptions() {
-    this.options['floor'] = 0;
-    this.options['ceil'] = this.maxNumberOfPages;
-    this.options['step'] = 50;
+    this.options = {
+      floor: 0,
+      ceil: this.maxNumberOfPages,
+      step: 50,
+    };
   }
   getGenres() {
     this.booklist.forEach((book) => {
