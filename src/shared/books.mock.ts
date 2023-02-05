@@ -21,7 +21,7 @@ export const BOOKS_MOCK: IBook[] = [
   },
   {
     title: 'Some book',
-    author: 'Some Author',
+    author: 'Andrzej Sapkowski',
     description:
       'Any system or thing that is the source of values that are being pushed out of the observable subscription to the consumer. This can be a wide variety of things, from a WebSocket to a simple iteration over an Array. ',
     totalNumberOfPages: 356,
