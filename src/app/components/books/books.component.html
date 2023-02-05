@@ -34,7 +34,12 @@
       >
     </mat-select>
   </mat-form-field>
-  <ngx-slider [options]="options" [formControl]="pageControl"></ngx-slider>
+  <!-- <ngx-slider
+    [(value)]="value"
+    [(highValue)]="highValue"
+    [options]="options"
+    [formControl]="pageControl"
+  ></ngx-slider> -->
   <mat-form-field appearance="fill">
     <mat-label>Language</mat-label>
     <mat-select multiple name="languages" formControlName="language">

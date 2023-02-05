@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BookService } from 'src/app/services/book.service';
 import { IBook } from 'src/shared/models/IBook';
@@ -13,20 +13,23 @@ import { BookCardComponent } from '../book-card/book-card.component';
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss'],
 })
-export class BooksComponent implements OnInit {
+export class BooksComponent implements OnInit, AfterViewInit {
   formControl!: FormGroup;
   @ViewChild(MatTable) table!: MatTable<IBook>;
   maxNumberOfPages!: number;
+  value: number = 40;
+  highValue: number = 2000;
   pageControl = new FormControl([0, 2000]);
   booklist!: IBook[];
   book!: IBook;
   dataSource!: MatTableDataSource<IBook>;
 
-  options: Options = {
-    floor: 0,
-    ceil: 2000,
-    step: 50,
-  };
+  options: Options = {};
+  // options: Options = {
+  //   floor: 0,
+  //   ceil: 2000,
+  //   step: 50,
+  // };
 
   displayedColumns: string[] = [
     'title',
@@ -36,41 +39,36 @@ export class BooksComponent implements OnInit {
     'language',
     'genre',
   ];
+  genres: string[] = [];
+  authors: string[] = [];
+  languages: string[] = [];
 
-  get genres() {
-    let genres: string[] = [];
-    this.booklist.forEach((book) => {
-      if (genres.includes(book.genre)) return;
-      genres.push(book.genre);
-    });
-    return genres;
-  }
-  get authors() {
-    let authors: string[] = [];
-    this.booklist.forEach((book) => authors.push(book.author));
-    return authors;
-  }
-  get languages() {
-    let languages: string[] = [];
-    this.booklist.forEach((book) => {
-      if (languages.includes(book.language)) return;
-      languages.push(book.language);
-    });
-    return languages;
-  }
   constructor(
     private bookService: BookService,
     public dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {}
+  ngAfterViewInit(): void {
+    let rangeOptions: Options = {
+      floor: 0,
+      ceil: this.maxNumberOfPages,
+      step: 50,
+    };
+    this.options = rangeOptions;
+  }
 
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
       this.booklist = books as IBook[];
       this.dataSource = new MatTableDataSource(this.booklist);
+      this.getGenres();
+      this.getAuthors();
+      this.getLanguages();
+      this.getMaxNumberOfPages();
+
+      // this.getSliderOptions();
+      this.customFilterSetup();
     });
-    this.getMaxNumberOfPages();
-    this.customFilterSetup();
     this.formControl = this.formBuilder.group({
       title: '',
       genre: '',
@@ -102,6 +100,30 @@ export class BooksComponent implements OnInit {
   }
   getBookList() {
     return this.bookService.allBooks();
+  }
+
+  getSliderOptions() {
+    this.options['floor'] = 0;
+    this.options['ceil'] = this.maxNumberOfPages;
+    this.options['step'] = 50;
+  }
+  getGenres() {
+    this.booklist.forEach((book) => {
+      if (this.genres.includes(book.genre)) return;
+      this.genres.push(book.genre);
+    });
+    return this.genres;
+  }
+  getAuthors() {
+    this.booklist.forEach((book) => this.authors.push(book.author));
+    return this.authors;
+  }
+  getLanguages() {
+    this.booklist.forEach((book) => {
+      if (this.languages.includes(book.language)) return;
+      this.languages.push(book.language);
+    });
+    return this.languages;
   }
   getMaxNumberOfPages() {
     let numOfPages: number[] = [];

@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { IAuthor } from 'src/shared/models/IAuthor';
-
-const BASE_URL = 'https://authorstest-ee96c-default-rtdb.firebaseio.com';
+import { BASE_URL } from 'src/shared/urls';
 
 @Injectable({
   providedIn: 'root',

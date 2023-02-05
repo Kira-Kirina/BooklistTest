@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, merge, Observable, of, scan, Subject } from 'rxjs';
 import { BOOKS_MOCK } from 'src/shared/books.mock';
 import { IBook } from 'src/shared/models/IBook';
 import { AUTHORS_MOCK, LANGUAGES_MOCK } from 'src/shared/select-data.mock';
+import { BASE_URL } from 'src/shared/urls';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +13,20 @@ export class BookService {
   private bookSubject = new Subject<IBook>();
   public bookObservable: Observable<IBook> = this.bookSubject.asObservable();
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
   getAllBooks(): Observable<IBook[]> {
-    return of(BOOKS_MOCK);
+    return this.http
+      .get<{ [id: string]: IBook }>(`${BASE_URL}/books.json`)
+      .pipe(
+        map((books) => {
+          let booksData: IBook[] = [];
+          for (let id in books) {
+            booksData.push({ ...books[id] });
+          }
+          return booksData;
+        })
+      );
+    // return of(BOOKS_MOCK);
   }
   addBook(book: IBook) {
     this.bookSubject.next(book);
