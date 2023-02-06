@@ -48,11 +48,7 @@ export class BooksComponent implements OnInit {
   authors: string[] = [];
   languages: string[] = [];
 
-  constructor(
-    private bookService: BookService,
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder
-  ) {}
+  constructor(private bookService: BookService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getBookList().subscribe((books) => {
@@ -83,9 +79,8 @@ export class BooksComponent implements OnInit {
         genre: value.genre,
         title: value.title,
         language: value.language,
-        pageControl: value,
+        pageControl: value.pageControl,
       } as string;
-      console.log(value);
 
       this.dataSource.filter = filter;
     });
@@ -117,27 +112,28 @@ export class BooksComponent implements OnInit {
       if (this.genres.includes(book.genre)) return;
       this.genres.push(book.genre);
     });
-    return this.genres;
   }
   getAuthors() {
-    this.booklist.forEach((book) => this.authors.push(book.author));
-    return this.authors;
+    this.booklist.forEach((book) => {
+      if (this.authors.includes(book.author)) return;
+
+      this.authors.push(book.author);
+    });
   }
   getLanguages() {
     this.booklist.forEach((book) => {
       if (this.languages.includes(book.language)) return;
       this.languages.push(book.language);
     });
-    return this.languages;
   }
-  getMaxNumberOfPages() {
-    let numOfPages: number[] = [];
-    this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
-    this.maxNumberOfPages = Math.max(...numOfPages);
-    if (this.maxNumberOfPages) {
-      this.options.ceil = this.maxNumberOfPages;
-    }
-  }
+  // getMaxNumberOfPages() {
+  //   let numOfPages: number[] = [];
+  //   this.booklist.forEach((book) => numOfPages.push(book.totalNumberOfPages));
+  //   this.maxNumberOfPages = Math.max(...numOfPages);
+  //   if (this.maxNumberOfPages) {
+  //     this.options.ceil = this.maxNumberOfPages;
+  //   }
+  // }
   customFilterSetup() {
     this.dataSource.filterPredicate = ((data, filter: any) => {
       const a =
@@ -169,8 +165,8 @@ export class BooksComponent implements OnInit {
 
       const e =
         !filter.pageControl ||
-        (data.totalNumberOfPages >= filter.pageControl.pageControl['0'] &&
-          data.totalNumberOfPages <= filter.pageControl.pageControl['1']);
+        (data.totalNumberOfPages >= filter.pageControl['0'] &&
+          data.totalNumberOfPages <= filter.pageControl['1']);
 
       return a && b && c && d && e;
     }) as (arg0: IBook, arg1: string) => boolean;
