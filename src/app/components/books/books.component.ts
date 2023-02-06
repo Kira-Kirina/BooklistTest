@@ -14,7 +14,13 @@ import { BookCardComponent } from '../book-card/book-card.component';
   styleUrls: ['./books.component.scss'],
 })
 export class BooksComponent implements OnInit {
-  formControl!: FormGroup;
+  formControl = new FormGroup({
+    title: new FormControl(''),
+    genre: new FormControl(''),
+    author: new FormControl(''),
+    language: new FormControl(''),
+    pageControl: new FormControl([0, 2000]),
+  });
   @ViewChild(MatTable) table!: MatTable<IBook>;
   maxNumberOfPages!: number;
   value: number = 40;
@@ -23,7 +29,7 @@ export class BooksComponent implements OnInit {
   book!: IBook;
   dataSource!: MatTableDataSource<IBook>;
 
-  pageControl = new FormControl([0, 2000]);
+  // pageControl = new FormControl([0, 2000]);
   options: Options = {
     floor: 0,
     ceil: 2000,
@@ -63,13 +69,13 @@ export class BooksComponent implements OnInit {
       this.getSliderOptions();
       this.customFilterSetup();
     });
-    this.formControl = this.formBuilder.group({
-      title: '',
-      genre: '',
-      author: '',
-      language: '',
-    });
-    this.formControl.valueChanges.subscribe((value) => {
+    // this.formControl = this.formBuilder.group({
+    //   title: '',
+    //   genre: '',
+    //   author: '',
+    //   language: '',
+    // });
+    this.formControl.valueChanges.subscribe((value: any) => {
       const filter = {
         ...value,
         author: value.author,
@@ -77,20 +83,23 @@ export class BooksComponent implements OnInit {
         genre: value.genre,
         title: value.title,
         language: value.language,
+        pageControl: value,
       } as string;
+      console.log(value);
+
       this.dataSource.filter = filter;
     });
 
-    this.pageControl.valueChanges.subscribe((value) => {
-      if (value) {
-        const [x, y] = value;
+    // this.pageControl.valueChanges.subscribe((value:any) => {
+    //       const filter = {
+    //     ...value,
+    //     pageControl: [value[0], value[1]],
+    //   } as string;
+    //   console.log(value[0], value[1]);
+    //   console.log(filter);
 
-        const data = this.booklist.filter((book) => {
-          return book.totalNumberOfPages >= x && book.totalNumberOfPages <= y;
-        });
-        this.dataSource.data = data;
-      }
-    });
+    //   this.dataSource.filter = filter;
+    // });
   }
   getBookList() {
     return this.bookService.allBooks();
@@ -158,7 +167,12 @@ export class BooksComponent implements OnInit {
           ? data.language
           : null;
 
-      return a && b && c && d;
+      const e =
+        !filter.pageControl ||
+        (data.totalNumberOfPages >= filter.pageControl.pageControl['0'] &&
+          data.totalNumberOfPages <= filter.pageControl.pageControl['1']);
+
+      return a && b && c && d && e;
     }) as (arg0: IBook, arg1: string) => boolean;
   }
 
